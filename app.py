@@ -3,24 +3,24 @@ import pandas as pd
 import numpy as np
 
 def bigest_sold(data):
-    bigest_sold = data['quantity_sold'].max()    # Recuperation des données de la colonne 'quantity_sold' et calcul du maximum grace a la fonction max()
-    bigest_sold_category = data[data['quantity_sold'] == bigest_sold]['category'].values[0]   # Recuperation de la catégorie de la meilleure vente
-    st.metric('Meilleure vente global', bigest_sold, bigest_sold_category)   # Affichage de la meilleure vente et de quelle catégorie elle provient
+    bigest_sold = data['quantity_sold'].max()    # Récupération des données de la colonne 'quantity_sold' et calcul du maximum grâce a la fonction max()
+    bigest_sold_category = data[data['quantity_sold'] == bigest_sold]['category'].values[0]   # Récupération de la catégorie de la meilleure vente
+    st.metric('Meilleure vente globale', bigest_sold, bigest_sold_category)   # Affichage de la meilleure vente et de quelle catégorie elle provient
 
 def stats(data):
     col1, col2 = st.columns([1, 1])   # Création de 2 colonnes pour afficher sur la même ligne
-    average = data['quantity_sold'].mean()      # Recuperation des données de la colonne 'quantity_sold' et calcul de la moyenne grace a la fonction mean()
-    average_book = data[data['category'] == 'Books']['quantity_sold'].mean()   # Recuperation des données de la colonne 'quantity_sold' et calcul de la moyenne pour la catégorie 'Book' grace a la fonction mean()
-    mediane = data['quantity_sold'].median()    # Recuperation des données de la colonne 'quantity_sold' et calcul de la mediane grace a la fonction median()
-    mediane_book = data[data['category'] == 'Books']['quantity_sold'].median()   # Recuperation des données de la colonne 'quantity_sold' et calcul de la mediane pour la catégorie 'Book' grace a la fonction median()
+    average = data['quantity_sold'].mean()      # Récupération des données de la colonne 'quantity_sold' et calcul de la moyenne grâce a la fonction mean()
+    average_book = data[data['category'] == 'Books']['quantity_sold'].mean()   # Récupération des données de la colonne 'quantity_sold' et calcul de la moyenne pour la catégorie 'Book' grâce a la fonction mean()
+    mediane = data['quantity_sold'].median()    # Récupération des données de la colonne 'quantity_sold' et calcul de la mediane grace a la fonction median()
+    mediane_book = data[data['category'] == 'Books']['quantity_sold'].median()   # Récupération des données de la colonne 'quantity_sold' et calcul de la mediane pour la catégorie 'Book' grace a la fonction median()
     with col1:  # Affichage des données dans la première colonne
-        st.metric('Moyenne global des ventes', round(average, 2))   # Affichage de la moyenne en l'arrondissant a 2 chiffres après la virgule
+        st.metric('Moyenne globale des ventes', round(average, 2))   # Affichage de la moyenne en l'arrondissant à 2 chiffres après la virgule
     with col2:
-        st.metric('Moyenne des ventes de livre', round(average_book, 2))
+        st.metric('Moyenne des ventes de livres', round(average_book, 2))
     with col1:
-        st.metric('Mediane global des ventes', round(mediane, 2))   # Affichage de la mediane en l'arrondissant a 2 chiffres après la virgule
+        st.metric('Mediane globale des ventes', round(mediane, 2))   # Affichage de la mediane en l'arrondissant à 2 chiffres après la virgule
     with col2:
-        st.metric('Mediane des ventes de livre', round(mediane_book, 2))
+        st.metric('Mediane des ventes de livres', round(mediane_book, 2))
     # https://docs.streamlit.io/develop/api-reference/data/st.metric
     bigest_sold(data)
 
@@ -44,14 +44,14 @@ def filter(data):
 
     if st.button('Filtrer'):    # Si le bouton est cliqué
     # https://docs.streamlit.io/develop/api-reference/widgets/st.button
-        st.session_state.category = None if st.session_state.category else True # Changer l'etat du bouton a chaque interaction
+        st.session_state.category = None if st.session_state.category else True # Changer l'état du bouton à chaque interaction
     if st.session_state.category:   # Si le bouton est activé
-        category = st.selectbox('Catégorie', data['category'].unique()) # Selectionner une catégorie et faire en sorte qu'elle soit unique
+        category = st.selectbox('Catégorie', data['category'].unique()) # Sélectionner une catégorie et faire en sorte qu'elle soit unique
         if st.button('Go'):
             st.session_state.selected_category = category   # Enregistrer la catégorie selectionnée
-            st.session_state.filtered_data = data[data['category'] == category]  # Si la categorie correspond a celle selectionnée, afficher les données correspondantes
+            st.session_state.filtered_data = data[data['category'] == category]  # Si la catégorie correspond à celle sélectionnée, afficher les données correspondantes
 
-    if st.session_state.selected_category and st.session_state.category:    # Si une catégorie est selectionnée et que le bouton filtrer est activé
+    if st.session_state.selected_category and st.session_state.category:    # Si une catégorie est sélectionnée et que le bouton filtrer est activé
         st.subheader(f"Données filtrées par catégorie : {st.session_state.selected_category}")
         # https://docs.streamlit.io/develop/api-reference/text/st.subheader
         st.dataframe(st.session_state.filtered_data)
